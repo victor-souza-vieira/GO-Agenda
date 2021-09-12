@@ -3,12 +3,12 @@ package models
 import "agenda/modules/db"
 
 type Contato struct {
-	Id       int    `json:id`
-	Nome     string `json:nome`
-	Email    string `json:email`
-	Telefone string `json:telefone`
-	Celular  string `json:celular`
-	Endereco string `json:endereco`
+	Id       int    `json:"id"`
+	Nome     string `json:"nome"`
+	Email    string `json:"email"`
+	Telefone string `json:"telefone"`
+	Celular  string `json:"celular"`
+	Endereco string `json:"endereco"`
 }
 
 func SalvarContato(nome string, email string, telefone string, celular string, endereco string) {
