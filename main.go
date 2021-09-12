@@ -1,12 +1,15 @@
 package main
 
 import (
-	"net/http"
-
 	"agenda/modules/routes"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	routes.CarregaRotas()
-	http.ListenAndServe(":8000", nil)
+	router := gin.Default()
+	routes.CarregaRotas(router)
+
+	router.Run("localhost:8080")
+
 }

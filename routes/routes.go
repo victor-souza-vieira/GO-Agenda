@@ -1,17 +1,11 @@
 package routes
 
 import (
-	"net/http"
-
 	"agenda/modules/controllers"
+
+	"github.com/gin-gonic/gin"
 )
 
-func CarregaRotas() {
-	rotasEscrita()
-}
-
-/*Tem como objetivo as rotas que fazem escrita em linhas de tabelas do
-banco de dados*/
-func rotasEscrita() {
-	http.HandleFunc("/contatos", controllers.SalvarContato)
+func CarregaRotas(router *gin.Engine) {
+	router.GET("/contatos", controllers.SalvarContato)
 }

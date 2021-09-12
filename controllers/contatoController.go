@@ -1,7 +1,9 @@
 package controllers
 
-import "net/http"
+import (
+	"github.com/gin-gonic/gin"
+)
 
-func SalvarContato(w http.ResponseWriter, r *http.Request) {
+func SalvarContato(gc *gin.Context) {
 
 }
