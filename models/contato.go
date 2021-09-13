@@ -32,3 +32,27 @@ func SalvarContato(nome string, email string, telefone string, celular string, e
 
 	return sqlResult.LastInsertId()
 }
+
+func ListarContatos() []Contato {
+	db := db.ConectarBancoDados()
+	defer db.Close()
+
+	selectTodosContatos, err := db.Query("SELECT * FROM contatos ORDER BY nome ASC")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	contato := Contato{}
+	contatos := []Contato{}
+
+	for selectTodosContatos.Next() {
+		err := selectTodosContatos.Scan(&contato.Id, &contato.Nome, &contato.Email, &contato.Telefone, &contato.Celular, &contato.Endereco)
+		if err != nil {
+			panic(err.Error())
+		}
+		contatos = append(contatos, contato)
+	}
+
+	return contatos
+}

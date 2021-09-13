@@ -22,5 +22,16 @@ func SalvarContato(gc *gin.Context) {
 		novoContato.Id = lastId
 		gc.IndentedJSON(http.StatusCreated, novoContato)
 	}
+}
+
+func ListarContatos(gc *gin.Context) {
+
+	contatos := models.ListarContatos()
+
+	if len(contatos) > 0 {
+		gc.IndentedJSON(http.StatusOK, contatos)
+	} else {
+		gc.IndentedJSON(http.StatusNoContent, nil)
+	}
 
 }
