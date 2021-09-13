@@ -7,5 +7,5 @@ import (
 )
 
 func CarregaRotas(router *gin.Engine) {
-	router.GET("/contatos", controllers.SalvarContato)
+	router.POST("/contatos", controllers.SalvarContato)
 }
