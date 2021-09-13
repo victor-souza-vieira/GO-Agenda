@@ -16,7 +16,7 @@ func SalvarContato(gc *gin.Context) {
 
 	lastId, err := models.SalvarContato(novoContato.Nome, novoContato.Email, novoContato.Telefone, novoContato.Celular, novoContato.Endereco)
 
-	if err == nil {
+	if err != nil {
 		gc.JSON(http.StatusInternalServerError, gin.H{"status": "Houve um erro ao processar sua requisição"})
 	} else {
 		novoContato.Id = lastId
@@ -33,5 +33,9 @@ func ListarContatos(gc *gin.Context) {
 	} else {
 		gc.IndentedJSON(http.StatusNoContent, nil)
 	}
+}
 
+func DeletarContato(gc *gin.Context) {
+	models.DeletarContato(gc.Param("id"))
+	gc.IndentedJSON(http.StatusNoContent, nil)
 }

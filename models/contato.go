@@ -56,3 +56,17 @@ func ListarContatos() []Contato {
 
 	return contatos
 }
+
+func DeletarContato(idContato string) {
+
+	db := db.ConectarBancoDados()
+	defer db.Close()
+
+	contatoDeletado, err := db.Prepare("DELETE FROM contatos WHERE id = ?")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	contatoDeletado.Exec(idContato)
+}
