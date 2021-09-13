@@ -1,9 +1,11 @@
 package models
 
-import "agenda/modules/db"
+import (
+	"agenda/modules/db"
+)
 
 type Contato struct {
-	Id       int    `json:"id"`
+	Id       int64  `json:"id"`
 	Nome     string `json:"nome"`
 	Email    string `json:"email"`
 	Telefone string `json:"telefone"`
@@ -11,15 +13,22 @@ type Contato struct {
 	Endereco string `json:"endereco"`
 }
 
-func SalvarContato(nome string, email string, telefone string, celular string, endereco string) {
+/*Funcao responsavel por inserir um contato no banco de dados*/
+func SalvarContato(nome string, email string, telefone string, celular string, endereco string) (int64, error) {
 	db := db.ConectarBancoDados()
 	defer db.Close()
 
-	salvarNoBanco, err := db.Prepare("INSERT INTO contatos() values(?,?,?,?,?)")
+	salvarNoBanco, err := db.Prepare("INSERT INTO contatos() values(null, ?,?,?,?,?)")
 
 	if err != nil {
 		panic(err.Error())
 	}
 
-	salvarNoBanco.Exec(nome, email, telefone, celular, endereco)
+	sqlResult, err := salvarNoBanco.Exec(nome, email, telefone, celular, endereco)
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return sqlResult.LastInsertId()
 }
