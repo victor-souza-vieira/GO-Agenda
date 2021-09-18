@@ -31,11 +31,22 @@ func ListarContatos(gc *gin.Context) {
 	if len(contatos) > 0 {
 		gc.IndentedJSON(http.StatusOK, contatos)
 	} else {
-		gc.IndentedJSON(http.StatusNoContent, nil)
+		gc.AbortWithStatus(http.StatusNoContent)
 	}
 }
 
 func DeletarContato(gc *gin.Context) {
 	models.DeletarContato(gc.Param("id"))
 	gc.IndentedJSON(http.StatusNoContent, nil)
+}
+
+func BuscarContato(gc *gin.Context) {
+	contato := models.BuscarContato(gc.Param("id"))
+
+	if contato.Id > 0 {
+		gc.IndentedJSON(http.StatusOK, contato)
+	} else {
+		gc.AbortWithStatus(http.StatusNotFound)
+	}
+
 }

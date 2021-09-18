@@ -70,3 +70,25 @@ func DeletarContato(idContato string) {
 
 	contatoDeletado.Exec(idContato)
 }
+
+func BuscarContato(idContato string) Contato {
+	db := db.ConectarBancoDados()
+	defer db.Close()
+
+	contatoBD, err := db.Query("SELECT * FROM contatos WHERE id = ?", idContato)
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	contatoSaida := Contato{}
+	if contatoBD.Next() {
+		err := contatoBD.Scan(&contatoSaida.Id, &contatoSaida.Nome, &contatoSaida.Email, &contatoSaida.Telefone, &contatoSaida.Celular, &contatoSaida.Endereco)
+
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+
+	return contatoSaida
+}
