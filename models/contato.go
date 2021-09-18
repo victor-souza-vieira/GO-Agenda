@@ -6,12 +6,12 @@ import (
 )
 
 type Contato struct {
-	Id       int64  `json:"id"`
-	Nome     string `json:"nome"`
-	Email    string `json:"email"`
-	Telefone string `json:"telefone"`
-	Celular  string `json:"celular"`
-	Endereco string `json:"endereco"`
+	Id       int64  `json:"id" form:"id"`
+	Nome     string `json:"nome" form:"nome"`
+	Email    string `json:"email" form:"email"`
+	Telefone string `json:"telefone" form:"telefone"`
+	Celular  string `json:"celular" form:"celular"`
+	Endereco string `json:"endereco" form:"endereco"`
 }
 
 /*Funcao responsavel por inserir um contato no banco de dados*/
@@ -122,4 +122,41 @@ func EditarContato(contato Contato, idContato string) Contato {
 	contato.Id, _ = strconv.ParseInt(idContato, 10, 64)
 
 	return contato
+}
+
+func EditarParcialContato(contato Contato) Contato {
+	db := db.ConectarBancoDados()
+	defer db.Close()
+
+	result, err := db.Query("SELECT * FROM contatos WHERE id = ?", contato.Id)
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	contatoBD := Contato{}
+	if result.Next() {
+		err := result.Scan(&contatoBD.Id, &contatoBD.Nome, &contatoBD.Email, &contatoBD.Telefone, &contatoBD.Celular, &contatoBD.Endereco)
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+
+	if contato.Nome == "" {
+		contato.Nome = contatoBD.Nome
+	}
+	if contato.Email == "" {
+		contato.Email = contatoBD.Email
+	}
+	if contato.Telefone == "" {
+		contato.Telefone = contatoBD.Telefone
+	}
+	if contato.Celular == "" {
+		contato.Celular = contatoBD.Celular
+	}
+	if contato.Endereco == "" {
+		contato.Endereco = contatoBD.Endereco
+	}
+
+	return EditarContato(contato, strconv.Itoa(int(contato.Id)))
 }

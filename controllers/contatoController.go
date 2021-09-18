@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"agenda/modules/models"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -66,4 +67,25 @@ func EditarContato(gc *gin.Context) {
 		gc.AbortWithStatus(http.StatusBadRequest)
 	}
 
+}
+
+func EditarParcialContato(gc *gin.Context) {
+	var contatoParaEditar models.Contato
+	if gc.BindQuery(&contatoParaEditar) != nil {
+		panic("Erro ao realizar o bind das variaveis")
+	}
+
+	if contatoParaEditar.Id == 0 {
+		gc.AbortWithStatus(http.StatusBadRequest)
+		panic("Id de contato não informado na requisição")
+	}
+
+	fmt.Println(contatoParaEditar)
+	contatoEditado := models.EditarParcialContato(contatoParaEditar)
+
+	if contatoEditado.Id > 0 {
+		gc.IndentedJSON(http.StatusOK, contatoEditado)
+	} else {
+		gc.AbortWithStatus(http.StatusBadRequest)
+	}
 }
