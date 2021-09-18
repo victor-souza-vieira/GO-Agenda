@@ -2,6 +2,7 @@ package models
 
 import (
 	"agenda/modules/db"
+	"strconv"
 )
 
 type Contato struct {
@@ -91,4 +92,34 @@ func BuscarContato(idContato string) Contato {
 	}
 
 	return contatoSaida
+}
+
+func EditarContato(contato Contato, idContato string) Contato {
+	db := db.ConectarBancoDados()
+	defer db.Close()
+
+	stmtContato, err := db.Prepare("UPDATE contatos SET nome = ?, email = ?, telefone = ?, celular = ?, endereco = ? WHERE id = ?")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	sqlResult, err := stmtContato.Exec(contato.Nome, contato.Email, contato.Telefone, contato.Celular, contato.Endereco, idContato)
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	linhasAfetadas, err := sqlResult.RowsAffected()
+	if err != nil {
+		panic(err.Error())
+	}
+
+	if linhasAfetadas <= 0 {
+		return Contato{}
+	}
+
+	contato.Id, _ = strconv.ParseInt(idContato, 10, 64)
+
+	return contato
 }

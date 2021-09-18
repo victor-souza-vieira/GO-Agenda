@@ -50,3 +50,20 @@ func BuscarContato(gc *gin.Context) {
 	}
 
 }
+
+func EditarContato(gc *gin.Context) {
+	var contatoParaEdicao models.Contato
+
+	if gc.Bind(&contatoParaEdicao) != nil {
+		panic("Ocorreu um problema com o bind do objeto JSON para edição.")
+	}
+
+	contatoEditado := models.EditarContato(contatoParaEdicao, gc.Param("id"))
+
+	if contatoEditado.Id > 0 {
+		gc.IndentedJSON(http.StatusOK, contatoEditado)
+	} else {
+		gc.AbortWithStatus(http.StatusBadRequest)
+	}
+
+}
