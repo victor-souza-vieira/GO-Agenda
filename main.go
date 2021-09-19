@@ -1,7 +1,7 @@
 package main
 
 import (
-	"agenda/modules/routes"
+	"agenda/modules/api/routes"
 
 	"github.com/gin-gonic/gin"
 )

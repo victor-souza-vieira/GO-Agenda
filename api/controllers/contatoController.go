@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"agenda/modules/models"
+	"agenda/modules/domain/models"
 	"fmt"
 	"net/http"
 

@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"agenda/modules/controllers"
+	"agenda/modules/api/controllers"
 
 	"github.com/gin-gonic/gin"
 )
