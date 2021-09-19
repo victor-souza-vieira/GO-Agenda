@@ -11,6 +11,6 @@ func CarregaRotas(router *gin.Engine) {
 	router.GET("/contatos", controllers.ListarContatos)
 	router.DELETE("/contatos/:id", controllers.DeletarContato)
 	router.GET("/contatos/:id", controllers.BuscarContato)
-	router.POST("/contatos/:id", controllers.EditarContato)
-	router.PUT("/contatos", controllers.EditarParcialContato)
+	router.PUT("/contatos/:id", controllers.EditarContato)
+	router.PATCH("/contatos", controllers.EditarParcialContato)
 }
