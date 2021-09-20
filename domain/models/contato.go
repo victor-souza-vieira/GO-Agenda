@@ -2,6 +2,7 @@ package models
 
 import (
 	"agenda/modules/db"
+	exceptions "agenda/modules/exception"
 	"strconv"
 )
 
@@ -22,13 +23,21 @@ func SalvarContato(nome string, email string, telefone string, celular string, e
 	salvarNoBanco, err := db.Prepare("INSERT INTO contatos() values(null, ?,?,?,?,?)")
 
 	if err != nil {
-		panic(err.Error())
+		return 0, exceptions.CustomError{
+			Erro:       err.Error(),
+			Data:       "Não foi possível salvar o contato",
+			DateTime:   "",
+			StatusCode: 500}
 	}
 
 	sqlResult, err := salvarNoBanco.Exec(nome, email, telefone, celular, endereco)
 
 	if err != nil {
-		panic(err.Error())
+		return 0, exceptions.CustomError{
+			Erro:       err.Error(),
+			Data:       "Não foi possível salvar o contato",
+			DateTime:   "",
+			StatusCode: 500}
 	}
 
 	return sqlResult.LastInsertId()
