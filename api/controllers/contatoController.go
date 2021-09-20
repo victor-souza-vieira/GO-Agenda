@@ -2,8 +2,7 @@ package controllers
 
 import (
 	"agenda/modules/domain/models"
-	exceptions "agenda/modules/exception"
-	"encoding/json"
+	"agenda/modules/util"
 	"fmt"
 	"net/http"
 
@@ -20,9 +19,7 @@ func SalvarContato(gc *gin.Context) {
 	lastId, err := models.SalvarContato(novoContato.Nome, novoContato.Email, novoContato.Telefone, novoContato.Celular, novoContato.Endereco)
 
 	if err != nil {
-		var erro exceptions.CustomError
-		json.Unmarshal([]byte(err.Error()), &erro)
-		gc.JSON(erro.StatusCode, erro)
+		util.ResponseError(gc, err)
 	} else {
 		novoContato.Id = lastId
 		gc.IndentedJSON(http.StatusCreated, novoContato)

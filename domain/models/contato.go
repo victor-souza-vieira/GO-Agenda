@@ -15,7 +15,6 @@ type Contato struct {
 	Endereco string `json:"endereco" form:"endereco"`
 }
 
-/*Funcao responsavel por inserir um contato no banco de dados*/
 func SalvarContato(nome string, email string, telefone string, celular string, endereco string) (int64, error) {
 	db := db.ConectarBancoDados()
 	defer db.Close()
@@ -26,7 +25,6 @@ func SalvarContato(nome string, email string, telefone string, celular string, e
 		return 0, exceptions.CustomError{
 			Erro:       err.Error(),
 			Data:       "Não foi possível salvar o contato",
-			DateTime:   "",
 			StatusCode: 500}
 	}
 
@@ -36,7 +34,6 @@ func SalvarContato(nome string, email string, telefone string, celular string, e
 		return 0, exceptions.CustomError{
 			Erro:       err.Error(),
 			Data:       "Não foi possível salvar o contato",
-			DateTime:   "",
 			StatusCode: 500}
 	}
 
