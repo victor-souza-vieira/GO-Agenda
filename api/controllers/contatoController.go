@@ -28,7 +28,12 @@ func SalvarContato(gc *gin.Context) {
 
 func ListarContatos(gc *gin.Context) {
 
-	contatos := models.ListarContatos()
+	contatos, err := models.ListarContatos()
+
+	if err != nil {
+		util.ResponseError(gc, err)
+		return
+	}
 
 	if len(contatos) > 0 {
 		gc.IndentedJSON(http.StatusOK, contatos)

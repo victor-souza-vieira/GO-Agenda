@@ -40,14 +40,25 @@ func SalvarContato(nome string, email string, telefone string, celular string, e
 	return sqlResult.LastInsertId()
 }
 
-func ListarContatos() []Contato {
+// TODO Construir funcao para retornar o erro baseado apenas na mensagem
+/*
+return nil, exceptions.CustomError{
+			Erro:       err.Error(),
+			Data:       "Não foi possível realizar sua consulta.",
+			StatusCode: 500}
+*/
+
+func ListarContatos() ([]Contato, error) {
 	db := db.ConectarBancoDados()
 	defer db.Close()
 
 	selectTodosContatos, err := db.Query("SELECT * FROM contatos ORDER BY nome ASC")
 
 	if err != nil {
-		panic(err.Error())
+		return nil, exceptions.CustomError{
+			Erro:       err.Error(),
+			Data:       "Não foi possível realizar sua consulta.",
+			StatusCode: 500}
 	}
 
 	contato := Contato{}
@@ -56,12 +67,15 @@ func ListarContatos() []Contato {
 	for selectTodosContatos.Next() {
 		err := selectTodosContatos.Scan(&contato.Id, &contato.Nome, &contato.Email, &contato.Telefone, &contato.Celular, &contato.Endereco)
 		if err != nil {
-			panic(err.Error())
+			return nil, exceptions.CustomError{
+				Erro:       err.Error(),
+				Data:       "Houve um erro no mapeamento da consulta.",
+				StatusCode: 500}
 		}
 		contatos = append(contatos, contato)
 	}
 
-	return contatos
+	return contatos, nil
 }
 
 func DeletarContato(idContato string) {
